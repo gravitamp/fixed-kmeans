@@ -42,51 +42,49 @@ func main() {
 	min, max := MinMax(count)
 	fmt.Println(min, max)
 	iter := 0
-	for max-min > 15 {
+	for max-min > 10 {
 		var count3 []int
-		fmt.Println("here", max-min)
 		//  Plan the steps of adjustment among clusters;
-		// 19 step (0, 1) (1,2), dst
 		for i := 0; i < len(clusters); i++ {
 			if len(clusters[i].Observations) > 102 {
 				var diffA Observations
 				var diffB []diffsort
-				// var clust []int
+				var clust []int
 				// call borderadjust, get new cluster A & B
-				clusters.borderadjust(i)
+				// clusters.borderadjust(i)
 
-				// 	//call borderadjust, get new cluster A & B
-				// 	r, _ := clusters.Neighbour(clusters[i].Center, i)
-				// 	diffA, diffB, clust = clusters.newborderadjust(i, r)
+				//call borderadjust, get new cluster A & B
+				r, _ := clusters.Neighbour(clusters[i].Center, i)
+				diffA, diffB, clust = clusters.newborderadjust(i, r)
 
-				// 	//FIX THIS (what?)
-				// 	if len(diffA) == 0 && len(diffB) == 0 {
-				// 		continue
-				// 	} else if len(diffA) != 0 && len(diffB) != 0 {
-				// 		clusters[i].Observations = diffA
-				// 		for j := 0; j < len(diffB); j++ {
-				// 			c := clust[j]
-				// 			clusters[c].Observations = append(clusters[c].Observations, diffB[j].data)
-				// 		}
-				// 	}
-				// 	clusters.Recenter()
-				// }
+				//FIX THIS (what?)
 				if len(diffA) == 0 && len(diffB) == 0 {
 					continue
 				} else if len(diffA) != 0 && len(diffB) != 0 {
 					clusters[i].Observations = diffA
-					if i < (len(clusters) - 1) {
-						for j := 0; j < len(diffB); j++ {
-							clusters[i+1].Observations = append(clusters[i+1].Observations, diffB[j].data)
-						}
-					} else {
-						for j := 0; j < len(diffB); j++ {
-							clusters[0].Observations = append(clusters[0].Observations, diffB[j].data)
-						}
+					for j := 0; j < len(diffB); j++ {
+						c := clust[j]
+						clusters[c].Observations = append(clusters[c].Observations, diffB[j].data)
 					}
 				}
 				clusters.Recenter()
 			}
+			// 	if len(diffA) == 0 && len(diffB) == 0 {
+			// 		continue
+			// 	} else if len(diffA) != 0 && len(diffB) != 0 {
+			// 		clusters[i].Observations = diffA
+			// 		if i < (len(clusters) - 1) {
+			// 			for j := 0; j < len(diffB); j++ {
+			// 				clusters[i+1].Observations = append(clusters[i+1].Observations, diffB[j].data)
+			// 			}
+			// 		} else {
+			// 			for j := 0; j < len(diffB); j++ {
+			// 				clusters[0].Observations = append(clusters[0].Observations, diffB[j].data)
+			// 			}
+			// 		}
+			// 	}
+			// 	clusters.Recenter()
+			// }
 		}
 		// recenter
 
